@@ -1,0 +1,5 @@
+defineModel('editableAssistant', { required: true });
+'editableAssistant' → 指定 v-model 名称，对应 v-model:editableAssistant
+
+{ required: true } → 这个 prop 是必填的，不传会报错
+
