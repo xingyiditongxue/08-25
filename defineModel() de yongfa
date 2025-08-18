@@ -2,4 +2,10 @@ defineModel('editableAssistant', { required: true });
 'editableAssistant' → 指定 v-model 名称，对应 v-model:editableAssistant
 
 { required: true } → 这个 prop 是必填的，不传会报错
+---------------------------------------------------------------------------------------
 
+defineModel 是 Vue 3.4 的新语法糖，用于简化子组件中 v-model 的声明。
+
+它直接返回一个 ref，既能读取父组件传进来的值，也能修改并自动触发更新。
+
+在你的例子里，它绑定到 v-model:editableAssistant，并且类型是 Assistant，必填。
