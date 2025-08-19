@@ -1,0 +1,44 @@
+stages: [changelog]
+
+generate_changelog:
+  stage: changelog
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  image: alpine:3.20
+  before_script:
+    - apk add --no-cache git
+    - git config user.name "ci-bot"
+    - git config user.email "ci-bot@example.com"
+    - git fetch --tags origin
+  script: |
+    # 找到上一个 tag（如果没有就用项目的第一个 commit）
+    PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
+    if [ -z "$PREV_TAG" ]; then
+      BASE=$(git rev-list --max-parents=0 HEAD)
+    else
+      BASE="$PREV_TAG"
+    fi
+
+    # 生成 changelog 片段
+    echo "## $(date +%Y-%m-%d) — $(git rev-parse --short HEAD)" > .tmp_release_notes.md
+    echo "" >> .tmp_release_notes.md
+    git log --pretty=format:"- %s (%h)" "$BASE"..HEAD >> .tmp_release_notes.md
+    echo "" >> .tmp_release_notes.md
+
+    # 插入到 CHANGELOG.md
+    if [ -f CHANGELOG.md ]; then
+      cat .tmp_release_notes.md CHANGELOG.md > CHANGELOG.new.md
+      mv CHANGELOG.new.md CHANGELOG.md
+    else
+      mv .tmp_release_notes.md CHANGELOG.md
+    fi
+
+    # 提交并 push
+    git add CHANGELOG.md
+    if ! git diff --cached --quiet; then
+      git remote set-url origin "https://oauth2:${GIT_WRITE_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+      git commit -m "chore(changelog): update [skip ci]"
+      git push origin "$CI_COMMIT_BRANCH"
+    else
+      echo "没有变化"
+    fi
