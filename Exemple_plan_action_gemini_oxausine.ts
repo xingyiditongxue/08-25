@@ -1,17 +1,18 @@
+J'aimerais introduire un nouvel IA assistant dans mon projet: Kimi-K2. Voici le plan d'action.
+
 Plan d'Action
 
 Création des Constantes Spécifiques au Modèle Kimi
-1.1. Créer un nouveau fichier : src/common/internal/models/llm/tokenInfo/LlmTokenInfo.kimi.constants.ts.
-1.2. Dans ce nouveau fichier, définir et exporter les constantes KIMI_CONTEXT_WINDOW_SIZE et KIMI_MAX_TOKENS_PER_REQUEST avec les valeurs appropriées pour le modèle Kimi-K2.
+1.1. Dans le fichier : src/common/internal/models/llm/tokenInfo/LlmTokenInfo.constants.ts. Définir et exporter les constantes KIMI_CONTEXT_WINDOW_SIZE et KIMI_MAX_TOKENS_PER_REQUEST avec les valeurs appropriées pour le modèle Kimi-K2.
 
 Création du Modèle de Step pour Kimi
-3.1. Créer le fichier src/common/internal/models/steps/kimi/Kimi.step.ts.
-3.2. Importer les constantes KIMI_CONTEXT_WINDOW_SIZE et KIMI_MAX_TOKENS_PER_REQUEST depuis le fichier LlmTokenInfo.kimi.constants.ts créé à l'étape 1.
-3.3. Définir et exporter l'objet kimiTokenInfo en utilisant les constantes Kimi importées, corrigeant ainsi l'erreur de contamination logique.
-3.4. Définir et exporter la classe KimiStep.
+2.1. Créer le fichier src/common/internal/models/steps/kimi/Kimi.step.ts.
+2.2. Importer les constantes KIMI_CONTEXT_WINDOW_SIZE et KIMI_MAX_TOKENS_PER_REQUEST depuis le fichier LlmTokenInfo.kimi.constants.ts créé à l'étape 1.
+2.3. Définir et exporter l'objet kimiTokenInfo en utilisant les constantes Kimi importées, corrigeant ainsi l'erreur de contamination logique.
+2.4. Définir et exporter l'objet OxaHubOpenRouterApiKimiK2.
 
 Intégration du Modèle de Step Kimi
-5.1. Ouvrir le fichier src/common/internal/models/steps/Llm.steps.constants.ts.
+5.1. Ouvrir le fichier src/common/internal/models/steps/RegisteredSteps.ts.
 5.2. Ajouter l'import pour KimiStep. L'import doit être inséré en respectant l'ordre alphabétique.
 5.3. Ajouter une entrée pour le modèle 'moonshotai/kimi-k2' dans la constante LLM_STEPS, en l'associant à KimiStep.
 
